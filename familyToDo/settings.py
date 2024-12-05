@@ -93,7 +93,7 @@ DATABASES = {
         'USER': parsed_url.username,
         'PASSWORD': parsed_url.password,
         'HOST': parsed_url.hostname,
-        'PORT': parsed_url.port
+        'PORT': parsed_url.port,
     }
 }
 

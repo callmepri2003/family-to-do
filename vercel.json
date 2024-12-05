@@ -1,19 +1,20 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "familyToDo/wsgi.py",
-        "use": "@vercel/python",
-        "config": {
-          "maxLambdaSize": "50mb"
-        }
+  "version": 2,
+  "builds": [
+    {
+      "src": "familyToDo/wsgi.py",
+      "use": "@vercel/python",
+      "config": {
+        "maxLambdaSize": "50mb",
+        "buildCommand": "./build_files.sh",
+        "runtime": "python3.12"
       }
-    ],
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "familyToDo/wsgi.py"
-      }
-    ]
-  }
-  
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "familyToDo/wsgi.py"
+    }
+  ]
+}

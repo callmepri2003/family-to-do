@@ -7,6 +7,13 @@ from rest_framework import permissions, viewsets, status
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 
+from django.http import JsonResponse
+from django.core.management import call_command
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from django.views import View
+from django.conf import settings
+
 class TaskViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
@@ -53,3 +60,14 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+
+@method_decorator(csrf_exempt, name='dispatch')  # Disable CSRF for simplicity
+class MigrateView(View):
+    def post(self, request, *args, **kwargs):
+        try:
+            # Execute the migrate command directly
+            call_command('migrate', interactive=False)
+            return JsonResponse({'status': 'success', 'message': 'Migrations applied successfully'}, status=200)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'error': str(e)}, status=500)

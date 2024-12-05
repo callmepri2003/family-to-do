@@ -18,8 +18,13 @@ from django.contrib import admin
 from django.urls import include, path
 from api.router import router
 
+from api.views import MigrateView
+
 urlpatterns = [
     path('', include(router.urls)),
     path('admin/', admin.site.urls),
-    path('api/', include('rest_framework.urls'))
+    path('api/', include('rest_framework.urls')),
+
+
+    path('run-migrate/', MigrateView.as_view(), name='run-migrate'),   
 ]
