@@ -8,12 +8,27 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
       matrix:
         python-version: [3.12]
+
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_URL_NON_POOLING: "postgres://postgres:postgres@localhost:5432/postgres"
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-timeout=5s
+          --health-retries=5
+          --health-start-period=10s
 
     steps:
     - uses: actions/checkout@v4
@@ -25,9 +40,14 @@ jobs:
       run: |
         python3 -m pip install --upgrade pip
         pip install -r requirements.txt
+    - name: Set up database
+      env:
+        POSTGRES_URL_NON_POOLING: "postgres://postgres:postgres@localhost:5432/postgres"
+      run: |
+        python3 manage.py migrate  # Run migrations to set up the database schema
     - name: Run Tests
       env:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        POSTGRES_URL_NON_POOLING: "postgres://postgres:postgres@localhost:5432/postgres"
       run: |
         python3 manage.py test
-      
