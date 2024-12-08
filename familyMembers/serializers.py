@@ -6,6 +6,7 @@ class FamilyMemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = FamilyMember
         fields = '__all__'
+        depth = 1
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

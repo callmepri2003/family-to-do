@@ -37,7 +37,6 @@ class TaskViewSet(viewsets.ModelViewSet):
         task.completeTask()
         return Response({'status': 'Task Completed'}, status=status.HTTP_200_OK)
 
-
 class FamilyMemberViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
@@ -53,3 +52,7 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    @action(detail=False, methods=['GET'])
+    def getAllTasks():
+        return 

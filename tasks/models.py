@@ -12,7 +12,7 @@ class Status(models.TextChoices):
 class Task(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
-    assigned_to = models.ForeignKey(FamilyMember, on_delete=models.CASCADE)
+    assigned_to = models.ForeignKey(FamilyMember, on_delete=models.CASCADE, related_name="tasks")
     status = models.CharField(max_length=2, choices=Status, default=Status.PENDING)
     created_at = models.DateTimeField(auto_now_add=True)
 
