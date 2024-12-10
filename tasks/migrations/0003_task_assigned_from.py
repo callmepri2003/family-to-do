@@ -15,7 +15,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='task',
             name='assigned_from',
-            field=models.ForeignKey(default=6, on_delete=django.db.models.deletion.CASCADE, related_name='tasked_assigned_to_others', to='familyMembers.familymember'),
-            preserve_default=False,
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='tasked_assigned_to_others', to='familyMembers.familymember'),
         ),
     ]
