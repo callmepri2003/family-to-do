@@ -27,7 +27,8 @@ class APITests(APITestCase):
             "title": "Assign Test",
             "description": "This is a pending task.",
             "status": 'PE',
-            "assigned_to": self.familyMember2.pk
+            "assigned_to": self.familyMember2.pk,
+            "assigned_from": self.familyMember1.pk
         }
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -35,7 +36,7 @@ class APITests(APITestCase):
         self.assertEqual(Task.objects.get().title, 'Assign Test')
     
     def testRejectTask(self):
-        originalTask = Task(title='Do this!', assigned_to=self.familyMember1)
+        originalTask = Task(title='Do this!', assigned_to=self.familyMember1, assigned_from=self.familyMember2)
         originalTask.save()
 
         url = reverse('task-reject-task', args=([originalTask.pk]))
@@ -46,7 +47,7 @@ class APITests(APITestCase):
         self.assertEqual(updatedTask.getStatus(), taskStatus.REJECTED)
 
     def testAcceptTask(self):
-        originalTask = Task(title='Do this!', assigned_to=self.familyMember1)
+        originalTask = Task(title='Do this!', assigned_to=self.familyMember1, assigned_from=self.familyMember2)
         originalTask.save()
 
         url = reverse('task-accept-task', args=([originalTask.pk]))
@@ -57,7 +58,7 @@ class APITests(APITestCase):
         self.assertEqual(updatedTask.getStatus(), taskStatus.ACCEPTED)
     
     def testCompleteTask(self):
-        originalTask = Task(title='Do this!', assigned_to=self.familyMember1)
+        originalTask = Task(title='Do this!', assigned_to=self.familyMember1, assigned_from=self.familyMember2)
         originalTask.save()
 
         url = reverse('task-complete-task', args=([originalTask.pk]))

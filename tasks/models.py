@@ -15,6 +15,7 @@ class Task(models.Model):
     assigned_to = models.ForeignKey(FamilyMember, on_delete=models.CASCADE, related_name="tasks")
     status = models.CharField(max_length=2, choices=Status, default=Status.PENDING)
     created_at = models.DateTimeField(auto_now_add=True)
+    assigned_from = models.ForeignKey(FamilyMember, on_delete=models.CASCADE, related_name="tasked_assigned_to_others")
 
     def rejectTask(self):
         self.status = "RE"
